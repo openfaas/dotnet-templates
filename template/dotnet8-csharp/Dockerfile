@@ -14,12 +14,15 @@ RUN dotnet restore Root.csproj
 COPY . .
 RUN dotnet publish -c release -o /app
 
+RUN mkdir -p function/static
+
 FROM --platform=${TARGETPLATFORM:-linux/amd64}  mcr.microsoft.com/dotnet/aspnet:8.0
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
 
 WORKDIR /app
 COPY --from=build /app .
+COPY --from=build src/function/static static
 
 USER app
 
