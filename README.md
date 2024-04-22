@@ -38,3 +38,14 @@ export PREFIX="ttl.sh"
 faas-cli new --lang dotnet8-csharp $PREFIX hello-world
 ```
 
+## Adding static files
+
+If a folder named static is found in the root of your function's source code, **it will be copied** into the final image published for your function.
+
+To serve the contents of the static folder you can setup the file server in `Handler.cs`.
+
+```c#
+    public static void MapEndpoints(WebApplication app) {
+        app.UseStaticFiles();
+    }
+```
